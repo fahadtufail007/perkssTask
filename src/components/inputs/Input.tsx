@@ -1,18 +1,26 @@
 import React from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import {StyleSheet, TextInput} from 'react-native';
 
-import { colors } from '../../utils/theme';
+import {colors} from '../../utils/theme';
 
 interface props {
-  placeholder: string,
-  value: any,
-  onChangeText: any,
-  editable:any,
+  placeholder: string;
+  value: string | undefined;
+  onChangeText: any;
+  editable: boolean;
 }
 
-const Input = ({ editable,placeholder, value, onChangeText }: props) => {
+const Input = ({editable, placeholder, value, onChangeText}: props) => {
   return (
-    <TextInput style={styles.input} placeholder={placeholder} inputMode="text" placeholderTextColor={colors.darkGreyColor} value={value} onChangeText={onChangeText} editable={editable} />
+    <TextInput
+      style={styles.input}
+      placeholder={placeholder}
+      inputMode="text"
+      placeholderTextColor={colors.darkGreyColor}
+      value={value}
+      onChangeText={onChangeText}
+      editable={editable}
+    />
   );
 };
 
@@ -27,7 +35,7 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     marginTop: 20,
     fontWeight: '500',
-  }
+  },
 });
 
 export default Input;

@@ -1,41 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, {useCallback} from 'react';
+import {StyleSheet, View} from 'react-native';
+
+import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 
-import { Button, Input, TopToBottomModal } from '../../components';
-import SelectInput from '../../components/inputs/SelectInput';
-import { colors } from '../../utils/theme';
-import { NodeComponent } from '../../components';
-
-interface Node {
-  id: string;
-  name: string;
-  children: string[];
-  position: { x: number; y: number };
-}
-
+import {Button, Input, TopToBottomModal} from '../../components';
+import {colors} from '../../utils/theme';
 interface Props {
   name: any;
   setName: any;
-  trueCondition: any;
-  setCondotionName: any;
-  conditionName: any;
-  actionName: any;
-  setActionName: any;
+  isModalVisibleAction: boolean;
 }
 
 const HomeScreen = ({
   name,
   setName,
-  setCondotionName,
-  conditionName,
-  actionName,
-  setActionName,
+  isModalVisibleAction,
+  setModalVisibleAction,
+  isModalVisibleCondition,
+  setModalVisibleCondition,
+  isModalVisibleEnd, 
+  setModalVisibleEnd,
+  options2,
+  setOptions2,
+  viewValue,
+  setViewValue,
+  itemsAync,
+  setItemAync
 }: Props) => {
-  const [itemsAync, setItemAync] = useState([]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const retrieveData = async () => {
     try {
       const jsonString = await AsyncStorage.getItem('yourKey');
@@ -44,44 +39,38 @@ const HomeScreen = ({
         setItemAync(data);
       } else {
         setItemAync([]);
-        setActionName('');
-        setCondotionName('');
       }
     } catch (error) {
       console.error('Error retrieving data:', error);
     }
   };
 
-  useFocusEffect(React.useCallback(() => {
-    retrieveData();
-  }, []));
+  useFocusEffect(
+    useCallback(() => {
+      retrieveData();
+    }, [retrieveData]),
+  );
 
   const navigation = useNavigation();
   const handleNavigate = () => {
-    navigation.navigate('workFlow', { userName: name !== '' ? name : itemsAync.userName,options2,viewValue });
+    const dataToShowOnNextScreen = {
+      userName: name,
+      options2,
+      viewValue,
+    };
+    navigation.navigate('workFlow', dataToShowOnNextScreen);
   };
-
-  const [isModalVisibleAction, setModalVisibleAction] = useState(false);
-  const [isModalVisibleCondition, setModalVisibleCondition] = useState(false);
-  const [isModalVisibleEnd, setModalVisibleEnd] = useState(false);
-  const [activeButton, setActiveButton] = useState('');
-  const [options2, setOptions2] = useState<Node[]>([
-    { id: '1', name: 'Start' },
-  ]);
-  const [viewValue, setViewValue] = useState<Node[]>([
-    { key: '1', name: 'Start' },
-  ]);
-
   const handleSaveAction = (input1: string, selectedOption: string) => {
     if (input1 && selectedOption !== '') {
-      const isOptionExists = options2.some((option) => option.name === selectedOption);
+      const isOptionExists = options2.some(
+        (option: {name: string}) => option.name === selectedOption,
+      );
 
       if (!isOptionExists) {
         const dataForConditionNode = {
           id: String(options2.length + 1),
           name: input1,
           children: selectedOption,
-  
         };
         const dataForConditionNodeView = {
           key: String(options2.length + 1),
@@ -110,15 +99,15 @@ const HomeScreen = ({
 
   const handleSaveCondition = (input1: string, SelectedOption: string) => {
     if (input1 && SelectedOption !== '') {
-      const isOptionExists = options2.some((option) => option.name === SelectedOption);
+      const isOptionExists = options2.some(
+        (option: {name: string}) => option.name === SelectedOption,
+      );
 
       if (!isOptionExists) {
-        // const lastNodePosition = options2[options2.length - 1]?.position || { x: 50, y: 50 };
         const dataForConditionNode = {
           id: String(options2.length + 1),
           name: input1,
           children: SelectedOption,
-          // position: { x: lastNodePosition.x + 60, y: lastNodePosition.y + 60 },
         };
         const dataForConditionNodeView = {
           key: String(options2.length + 1),
@@ -144,15 +133,15 @@ const HomeScreen = ({
   };
   const handleSaveEnd = (input1: string, SelectedOption: string) => {
     if (input1 && SelectedOption !== '') {
-      const isOptionExists = options2.some((option) => option.name === SelectedOption);
+      const isOptionExists = options2.some(
+        (option: {name: string}) => option.name === SelectedOption,
+      );
 
       if (!isOptionExists) {
-     
         const dataForConditionNode = {
           id: String(options2.length + 1),
           name: input1,
           children: SelectedOption,
-      
         };
         const dataForConditionNodeView = {
           key: String(options2.length + 1),
@@ -177,13 +166,15 @@ const HomeScreen = ({
     }
   };
   const handleButtonPress = (buttonName: string) => {
-    setActiveButton(buttonName);
-    if (buttonName === 'Action') {
-      setModalVisibleAction(true);
-    } else if (buttonName === 'Conditional') {
-      setModalVisibleCondition(true);
-    } else if (buttonName === 'End') {
-      setModalVisibleEnd(true);
+    const modalStateSetterMap = {
+      Action: setModalVisibleAction,
+      Conditional: setModalVisibleCondition,
+      End: setModalVisibleEnd,
+    };
+
+    const modalStateSetter = modalStateSetterMap[buttonName];
+    if (modalStateSetter) {
+      modalStateSetter(true);
     }
   };
 
@@ -192,12 +183,14 @@ const HomeScreen = ({
       <Input
         placeholder="Workflow Name"
         value={itemsAync.userName}
-        onChangeText={(text) => setName(text)}
+        onChangeText={(text: any) => setName(text)}
+        editable={false}
       />
       <Input
         placeholder="Workflow Name"
         value={options2[0].name}
         editable={false}
+        onChangeText={undefined}
       />
       <View style={styles.buttonsWrapper}>
         <Button
@@ -210,7 +203,6 @@ const HomeScreen = ({
           customClass={styles.ConditionButton}
           onPress={() => handleButtonPress('Conditional')}
         />
-        
         <TopToBottomModal
           isVisible={isModalVisibleAction}
           onSave={handleSaveAction}
@@ -228,18 +220,22 @@ const HomeScreen = ({
       </View>
 
       <Button
-          title="End"
-          customClass={styles.EndButton}
-          onPress={() => handleButtonPress('End')}
-        />
-         <TopToBottomModal
-          isVisible={isModalVisibleEnd}
-          onSave={handleSaveEnd}
-          onClose={() => setModalVisibleEnd(false)}
-          txt="End"
-          options2={options2}
-        />
-      <Button title="Done" customClass={styles.doneButton} onPress={handleNavigate} />
+        title="End"
+        customClass={styles.EndButton}
+        onPress={() => handleButtonPress('End')}
+      />
+      <TopToBottomModal
+        isVisible={isModalVisibleEnd}
+        onSave={handleSaveEnd}
+        onClose={() => setModalVisibleEnd(false)}
+        txt="End"
+        options2={options2}
+      />
+      <Button
+        title="Done"
+        customClass={styles.doneButton}
+        onPress={handleNavigate}
+      />
     </View>
   );
 };
@@ -267,7 +263,7 @@ const styles = StyleSheet.create({
   EndButton: {
     backgroundColor: colors.blackColor,
     width: '100%',
-    marginTop:10
+    marginTop: 10,
   },
   doneButton: {
     position: 'absolute',

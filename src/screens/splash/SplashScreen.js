@@ -1,20 +1,21 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, View, Image, StatusBar } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, {useEffect} from 'react';
+import {StyleSheet, View, Image, StatusBar} from 'react-native';
 
-import { colors } from '../../utils/theme';
+import {useNavigation} from '@react-navigation/native';
 
-import Logo from "../../assets/perkss.png";
+import {colors} from '../../utils/theme';
+import Logo from '../../assets/perkss.png';
 
 const SplashScreen = () => {
   const navigation = useNavigation();
+
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      navigation.navigate("home");
+      navigation.navigate('home');
     }, 3000);
     return () => clearTimeout(timeoutId);
-
   }, [navigation]);
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor={colors.whiteColor} barStyle="dark-content" />
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.whiteColor,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 });
 

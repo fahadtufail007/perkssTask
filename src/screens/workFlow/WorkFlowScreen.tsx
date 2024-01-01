@@ -1,13 +1,12 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions,Text,Alert } from 'react-native';
-import { WebView } from 'react-native-webview';
-import { useRoute } from '@react-navigation/native';
-import { colors } from '../../utils/theme';
+import {View, StyleSheet, Text} from 'react-native';
+import {WebView} from 'react-native-webview';
+import {useRoute} from '@react-navigation/native';
+import {colors} from '../../utils/theme';
 const WorkFlowScreen = () => {
-    const route = useRoute();
-  const { userName, viewValue } = route.params;
-  console.log(viewValue)
-const data = JSON.stringify(viewValue)
+  const route = useRoute();
+  const {userName, viewValue} = route.params;
+  const data = JSON.stringify(viewValue);
   const htmlContent = `
   <!DOCTYPE html>
   <html>
@@ -42,19 +41,13 @@ const data = JSON.stringify(viewValue)
   </body>
   </html>
 `;
-const handleMessageFromWebView = (nodeName) => {
-  Alert.alert("Selected Node", nodeName);
-};
-
-
   return (
     <View style={styles.container}>
-       <Text style={styles.title}>{userName}</Text>
+      <Text style={styles.title}>{userName}</Text>
       <WebView
-        source={{ html: htmlContent }}
+        source={{html: htmlContent}}
         javaScriptEnabled={true}
         style={styles.webView}
-        onMessage={(event) => handleMessageFromWebView(event.nativeEvent.data)}
       />
     </View>
   );
@@ -63,7 +56,7 @@ const handleMessageFromWebView = (nodeName) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:colors.whiteColor
+    backgroundColor: colors.whiteColor,
   },
   title: {
     fontSize: 24,
@@ -76,5 +69,3 @@ const styles = StyleSheet.create({
 });
 
 export default WorkFlowScreen;
-
-

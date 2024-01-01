@@ -1,5 +1,5 @@
-import HomeContainer from "./home/HomeContainer";
-import WorkFlowContainer from "./workFlow/WorkFlowContainer";
-import SplashScreen from "./splash/SplashScreen";
+import IndexHome from './home/Index';
+import Index from './workFlow/Index';
+import SplashScreen from './splash/SplashScreen';
 
-export { HomeContainer, WorkFlowContainer, SplashScreen };
+export {IndexHome, Index, SplashScreen};
