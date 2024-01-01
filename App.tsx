@@ -4,7 +4,7 @@ import {View, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 
-import Routes from './src/screens/navigation/Routes';
+import Routes from './src/navigation/Routes';
 
 const App = () => {
   return (
