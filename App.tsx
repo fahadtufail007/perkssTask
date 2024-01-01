@@ -12,6 +12,7 @@ const App = () => {
   return (
     <View style={styles.container}>
       <NavigationContainer>
+        <Routes />
       <Toast ref={(ref) => Toast.setRef(ref)} />
       </NavigationContainer>
     </View>
