@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import {  SplashScreen } from "../screens";
+import { HomeContainer, SplashScreen } from "../screens";
 import { colors } from "./theme";
 
 const Stack = createStackNavigator();
@@ -15,7 +15,13 @@ const Auth = () => {
         options={{ headerShown: false }
         }
       />
-      
+      <Stack.Screen
+        name="home"
+        component={HomeContainer}
+        options={{ headerShown: false }
+        }
+      />
+   
     </Stack.Navigator>
   );
 };
