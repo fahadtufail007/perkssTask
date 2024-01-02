@@ -1,239 +1,82 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
 
-import {useNavigation} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useFocusEffect} from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
-
-import {Button, Input, TopToBottomModal} from '../../components';
+import {Button, Input, MultiSelector} from '../../components';
 import {colors} from '../../utils/theme';
-interface Props {
-  name: any;
-  setName: any;
-  isModalVisibleAction: boolean;
-}
+import {HomeScreenProps} from '..';
 
-const HomeScreen = ({
+const HomeScreen: React.FC<HomeScreenProps> = ({
   name,
   setName,
   isModalVisibleAction,
   setModalVisibleAction,
   isModalVisibleCondition,
   setModalVisibleCondition,
-  isModalVisibleEnd, 
+  isModalVisibleEnd,
   setModalVisibleEnd,
-  options2,
-  setOptions2,
-  viewValue,
-  setViewValue,
-  itemsAync,
-  setItemAync
-}: Props) => {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const retrieveData = async () => {
-    try {
-      const jsonString = await AsyncStorage.getItem('yourKey');
-      if (jsonString !== null) {
-        const data = JSON.parse(jsonString);
-        setItemAync(data);
-      } else {
-        setItemAync([]);
-      }
-    } catch (error) {
-      console.error('Error retrieving data:', error);
-    }
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      retrieveData();
-    }, [retrieveData]),
-  );
-
-  const navigation = useNavigation();
-  const handleNavigate = () => {
-    const dataToShowOnNextScreen = {
-      userName: name,
-      options2,
-      viewValue,
-    };
-    navigation.navigate('workFlow', dataToShowOnNextScreen);
-  };
-  const handleSaveAction = (input1: string, selectedOption: string) => {
-    if (input1 && selectedOption !== '') {
-      const isOptionExists = options2.some(
-        (option: {name: string}) => option.name === selectedOption,
-      );
-
-      if (!isOptionExists) {
-        const dataForConditionNode = {
-          id: String(options2.length + 1),
-          name: input1,
-          children: selectedOption,
-        };
-        const dataForConditionNodeView = {
-          key: String(options2.length + 1),
-          name: input1,
-          parent: selectedOption[0],
-        };
-        setOptions2([...options2, dataForConditionNode]);
-        setViewValue([...viewValue, dataForConditionNodeView]);
-
-        console.log(dataForConditionNode);
-      }
-
-      setModalVisibleAction(false);
-    } else {
-      setModalVisibleAction(true);
-
-      Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'Please fill all the fields',
-        visibilityTime: 3000,
-        autoHide: true,
-      });
-    }
-  };
-
-  const handleSaveCondition = (input1: string, SelectedOption: string) => {
-    if (input1 && SelectedOption !== '') {
-      const isOptionExists = options2.some(
-        (option: {name: string}) => option.name === SelectedOption,
-      );
-
-      if (!isOptionExists) {
-        const dataForConditionNode = {
-          id: String(options2.length + 1),
-          name: input1,
-          children: SelectedOption,
-        };
-        const dataForConditionNodeView = {
-          key: String(options2.length + 1),
-          name: input1,
-          parent: SelectedOption[0],
-        };
-        setOptions2([...options2, dataForConditionNode]);
-        setViewValue([...viewValue, dataForConditionNodeView]);
-
-        console.log(dataForConditionNode);
-      }
-    } else {
-      setModalVisibleCondition(true);
-
-      Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'Please fill all the fields',
-        visibilityTime: 3000,
-        autoHide: true,
-      });
-    }
-  };
-  const handleSaveEnd = (input1: string, SelectedOption: string) => {
-    if (input1 && SelectedOption !== '') {
-      const isOptionExists = options2.some(
-        (option: {name: string}) => option.name === SelectedOption,
-      );
-
-      if (!isOptionExists) {
-        const dataForConditionNode = {
-          id: String(options2.length + 1),
-          name: input1,
-          children: SelectedOption,
-        };
-        const dataForConditionNodeView = {
-          key: String(options2.length + 1),
-          name: input1,
-          parent: SelectedOption[0],
-        };
-        setOptions2([...options2, dataForConditionNode]);
-        setViewValue([...viewValue, dataForConditionNodeView]);
-
-        console.log(dataForConditionNode);
-      }
-    } else {
-      setModalVisibleCondition(true);
-
-      Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'Please fill all the fields',
-        visibilityTime: 3000,
-        autoHide: true,
-      });
-    }
-  };
-  const handleButtonPress = (buttonName: string) => {
-    const modalStateSetterMap = {
-      Action: setModalVisibleAction,
-      Conditional: setModalVisibleCondition,
-      End: setModalVisibleEnd,
-    };
-
-    const modalStateSetter = modalStateSetterMap[buttonName];
-    if (modalStateSetter) {
-      modalStateSetter(true);
-    }
-  };
-
+  selectAnOption,
+  handleSave,
+  handleButtonPress,
+  handleNavigate,
+  value,
+  setValue,
+}: HomeScreenProps) => {
   return (
     <View style={styles.container}>
       <Input
         placeholder="Workflow Name"
-        value={itemsAync.userName}
-        onChangeText={(text: any) => setName(text)}
-        editable={false}
+        value={name}
+        onChangeText={(text: string) => setName(text)}
+        editable={true}
       />
       <Input
         placeholder="Workflow Name"
-        value={options2[0].name}
+        value={value}
         editable={false}
-        onChangeText={undefined}
+        onChangeText={(text: string) => setValue(text)}
       />
       <View style={styles.buttonsWrapper}>
         <Button
           title="Action"
-          customClass={styles.button}
+          customStyle={styles.button}
           onPress={() => handleButtonPress('Action')}
         />
         <Button
-          title="Condtional"
-          customClass={styles.ConditionButton}
+          title="Conditional"
+          customStyle={styles.ConditionButton}
           onPress={() => handleButtonPress('Conditional')}
         />
-        <TopToBottomModal
+        <MultiSelector
           isVisible={isModalVisibleAction}
-          onSave={handleSaveAction}
+          onSave={handleSave}
           onClose={() => setModalVisibleAction(false)}
           txt="Enter Action"
-          options2={options2}
+          selectAnOption={selectAnOption}
         />
-        <TopToBottomModal
+        <MultiSelector
           isVisible={isModalVisibleCondition}
-          onSave={handleSaveCondition}
+          onSave={handleSave}
           onClose={() => setModalVisibleCondition(false)}
           txt="Enter Condition"
-          options2={options2}
+          selectAnOption={selectAnOption}
         />
       </View>
 
       <Button
         title="End"
-        customClass={styles.EndButton}
+        customStyle={styles.EndButton}
         onPress={() => handleButtonPress('End')}
       />
-      <TopToBottomModal
+      <MultiSelector
         isVisible={isModalVisibleEnd}
-        onSave={handleSaveEnd}
+        onSave={handleSave}
         onClose={() => setModalVisibleEnd(false)}
         txt="End"
-        options2={options2}
+        selectAnOption={selectAnOption}
       />
       <Button
         title="Done"
-        customClass={styles.doneButton}
+        customStyle={styles.doneButton}
         onPress={handleNavigate}
       />
     </View>

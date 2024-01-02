@@ -1,12 +1,12 @@
 import React from 'react';
 
 import {createStackNavigator} from '@react-navigation/stack';
-import {IndexHome, Index, SplashScreen} from '../screens';
+import {Index, IndexWorkFlow, SplashScreen} from '../screens';
 import {colors} from '../utils/theme';
 
 const Stack = createStackNavigator();
 
-const Auth = () => {
+const ScreenNavigate = () => {
   return (
     <Stack.Navigator initialRouteName="splash">
       <Stack.Screen
@@ -16,12 +16,12 @@ const Auth = () => {
       />
       <Stack.Screen
         name="home"
-        component={IndexHome}
+        component={Index}
         options={{headerShown: false}}
       />
       <Stack.Screen
         name="workFlow"
-        component={Index}
+        component={IndexWorkFlow}
         options={{
           headerShown: true,
           headerTitleStyle: {
@@ -38,4 +38,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default ScreenNavigate;

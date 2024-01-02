@@ -1,16 +1,14 @@
-import React from 'react';
+import React, {FC} from 'react';
 import {StyleSheet, TextInput} from 'react-native';
 
 import {colors} from '../../utils/theme';
-
-interface props {
-  placeholder: string;
-  value: string | undefined;
-  onChangeText: any;
-  editable: boolean;
-}
-
-const Input = ({editable, placeholder, value, onChangeText}: props) => {
+import {InputProps} from '..';
+const Input: FC<InputProps> = ({
+  editable,
+  placeholder,
+  value,
+  onChangeText,
+}: InputProps) => {
   return (
     <TextInput
       style={styles.input}

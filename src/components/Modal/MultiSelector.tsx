@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, FC} from 'react';
 import {
   View,
   Text,
@@ -6,13 +6,21 @@ import {
   StyleSheet,
   TextInput,
 } from 'react-native';
+
 import Modal from 'react-native-modal';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Import the desired icon library
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {MultiSelectorProps} from '..';
 
-const TopToBottomModal = ({isVisible, onSave, onClose, txt, options2}) => {
+const MultiSelector: FC<MultiSelectorProps> = ({
+  isVisible,
+  onSave,
+  onClose,
+  txt,
+  selectAnOption,
+}) => {
   const [input1, setInput1] = useState('');
-  const [selectedValues, setSelectedValues] = useState([]);
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
 
   const handleSave = () => {
     onSave(input1, selectedValues);
@@ -35,12 +43,11 @@ const TopToBottomModal = ({isVisible, onSave, onClose, txt, options2}) => {
           />
 
           <SectionedMultiSelect
-            items={options2}
+            items={selectAnOption}
             uniqueKey="id"
-            subKey="children"
-            IconRenderer={Icon} // Specify the icon renderer
+            IconRenderer={Icon}
             onSelectedItemsChange={selectedItems =>
-              setSelectedValues(selectedItems)
+              setSelectedValues(selectedItems as string[])
             }
             selectedItems={selectedValues}
             selectText="Select items"
@@ -109,4 +116,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TopToBottomModal;
+export default MultiSelector;

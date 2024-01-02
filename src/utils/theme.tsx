@@ -6,5 +6,5 @@ export const colors = {
   redColor: '#FF0000',
   blueColor: '#49BCDE',
   lightGreenColor: '#76DF56',
-  lightRedColor: '#FE6464'
-}
+  lightRedColor: '#FE6464',
+};

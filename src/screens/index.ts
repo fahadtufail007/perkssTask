@@ -1,5 +1,6 @@
-import IndexHome from './home/Index';
-import Index from './workFlow/Index';
+import {Index} from './home/Index';
+import IndexWorkFlow from './workFlow/Index';
 import SplashScreen from './splash/SplashScreen';
-
-export {IndexHome, Index, SplashScreen};
+import {HomeScreenProps, Props} from './typeScreen';
+export {Index, IndexWorkFlow, SplashScreen};
+export type {HomeScreenProps, Props};
