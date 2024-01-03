@@ -5,8 +5,7 @@ import HomeScreen from './HomeScreen';
 
 export const Index = () => {
   const navigation = useNavigation();
-  const value = 'Start';
-
+  const [value, setValue] = useState('Start');
   const [name, setName] = useState('');
   const [isModalVisibleAction, setModalVisibleAction] = useState(false);
   const [isModalVisibleCondition, setModalVisibleCondition] = useState(false);
@@ -16,28 +15,22 @@ export const Index = () => {
   ]);
   const [viewValue, setViewValue] = useState([{key: '1', name: 'Start'}]);
 
-  const handleSave = (input1: string, selectedOption: string) => {
-    if (input1 && selectedOption !== '') {
-      const isOptionExists = selectAnOption.some(
-        (option: {name: string}) => option.name === selectedOption,
-      );
+  const handleSave = (input1: string, selectedOption: any[]) => {
+    if (input1 && selectedOption.length > 0) {
+      const dataForConditionNode = {
+        id: String(selectAnOption.length + 1),
+        name: input1,
+        children: selectedOption,
+      };
+      const dataForConditionNodeView = {
+        key: String(selectAnOption.length + 1),
+        name: input1,
+        parent: selectedOption[0],
+      };
+      setSelectAnOption([...selectAnOption, dataForConditionNode]);
+      setViewValue([...viewValue, dataForConditionNodeView]);
 
-      if (!isOptionExists) {
-        const dataForConditionNode = {
-          id: String(selectAnOption.length + 1),
-          name: input1,
-          children: selectedOption,
-        };
-        const dataForConditionNodeView = {
-          key: String(selectAnOption.length + 1),
-          name: input1,
-          parent: selectedOption[0],
-        };
-        setSelectAnOption([...selectAnOption, dataForConditionNode]);
-        setViewValue([...viewValue, dataForConditionNodeView]);
-
-        console.log(dataForConditionNode);
-      }
+      console.log(dataForConditionNode);
     } else {
       Toast.show({
         type: 'error',
@@ -85,6 +78,7 @@ export const Index = () => {
       name={name}
       setName={setName}
       value={value}
+      setValue={setValue}
       isModalVisibleAction={isModalVisibleAction}
       setModalVisibleAction={setModalVisibleAction}
       isModalVisibleCondition={isModalVisibleCondition}
