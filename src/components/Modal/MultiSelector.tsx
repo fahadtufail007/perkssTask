@@ -29,7 +29,9 @@ const MultiSelector: FC<MultiSelectorProps> = ({
     if (addActionNode !== '' && selectedValues.length > 0) {
       onSave(addActionNode, selectedValues);
       onClose();
-      setErrorText("");
+      setErrorText('');
+      setAddActionNode('')
+      setSelectedValues([])
     } else {
       setErrorText("Please fill all the inputs");
     }
