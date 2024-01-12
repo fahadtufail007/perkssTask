@@ -1,7 +1,7 @@
-import React, {FC} from 'react';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {ButtonProps} from '..';
-import {colors} from '../../utils/theme';
+import React, { FC } from 'react';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { ButtonProps } from '..';
+import { colors } from '../../utils/theme';
 
 const Button: FC<ButtonProps> = ({
   title,
@@ -11,7 +11,8 @@ const Button: FC<ButtonProps> = ({
   return (
     <TouchableOpacity
       onPress={onPress}
-      style={[styles.buttonContainer, customStyle]}>
+      style={[styles.buttonContainer, customStyle]}
+    >
       <Text style={styles.title}>{title}</Text>
     </TouchableOpacity>
   );

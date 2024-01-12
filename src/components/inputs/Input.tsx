@@ -1,8 +1,9 @@
-import React, {FC} from 'react';
-import {StyleSheet, TextInput} from 'react-native';
+import React, { FC } from 'react';
+import { StyleSheet, TextInput } from 'react-native';
 
-import {colors} from '../../utils/theme';
-import {InputProps} from '..';
+import { colors } from '../../utils/theme';
+import { InputProps } from '..';
+
 const Input: FC<InputProps> = ({
   editable,
   placeholder,

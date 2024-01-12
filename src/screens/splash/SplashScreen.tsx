@@ -1,20 +1,19 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, View, Image, StatusBar} from 'react-native';
+import React, { useEffect } from 'react';
+import { StyleSheet, View, Image, StatusBar } from 'react-native';
 
-import {useNavigation} from '@react-navigation/native';
-
-import {colors} from '../../utils/theme';
+import { colors } from '../../utils/theme';
 import Logo from '../../assets/perkss.png';
+import CustomHooks from '../../CustomHooks/CustomHooks';
 
 const SplashScreen = () => {
-  const navigation = useNavigation();
+  const { navigateToScreen } = CustomHooks();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      navigation.navigate('home');
+      navigateToScreen('home');
     }, 3000);
     return () => clearTimeout(timeoutId);
-  }, [navigation]);
+  }, [navigateToScreen]);
 
   return (
     <View style={styles.container}>

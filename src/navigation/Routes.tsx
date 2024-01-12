@@ -1,8 +1,8 @@
 import React from 'react';
 
-import {createStackNavigator} from '@react-navigation/stack';
-import {Index, IndexWorkFlow, SplashScreen} from '../screens';
-import {colors} from '../utils/theme';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Index, IndexWorkFlow, SplashScreen } from '../screens';
+import { colors } from '../utils/theme';
 
 const Stack = createStackNavigator();
 
@@ -12,12 +12,12 @@ const ScreenNavigate = () => {
       <Stack.Screen
         name="splash"
         component={SplashScreen}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="home"
         component={Index}
-        options={{headerShown: false}}
+        options={{ headerShown: false }}
       />
       <Stack.Screen
         name="workFlow"

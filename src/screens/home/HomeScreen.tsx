@@ -1,79 +1,76 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import React, { FC } from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import {Button, Input, MultiSelector} from '../../components';
-import {colors} from '../../utils/theme';
-import {HomeScreenProps} from '..';
+import { Button, Input, MultiSelector } from '../../components';
+import { colors } from '../../utils/theme';
+import { HomeScreenProps } from '../../utils/type';
 
-const HomeScreen: React.FC<HomeScreenProps> = ({
-  name,
-  setName,
-  isModalVisibleAction,
-  setModalVisibleAction,
-  isModalVisibleCondition,
-  setModalVisibleCondition,
-  isModalVisibleEnd,
-  setModalVisibleEnd,
+const HomeScreen: FC<HomeScreenProps> = ({
+  modalState,
   selectAnOption,
   handleSave,
   handleButtonPress,
   handleNavigate,
-  value,
-  setValue,
+  workflow,
+  setWorkflow,
 }: HomeScreenProps) => {
   return (
     <View style={styles.container}>
       <Input
         placeholder="Workflow Name"
-        value={name}
-        onChangeText={(text: string) => setName(text)}
+        value={workflow.name}
+        onChangeText={(text: string) =>
+          setWorkflow(prevWorkflow => ({ ...prevWorkflow, name: text }))
+        }
         editable={true}
       />
       <Input
         placeholder="Workflow Name"
-        value={value}
+        value={workflow.value}
         editable={false}
-        onChangeText={(text: string) => setValue(text)}
+        onChangeText={(text: string) =>
+          setWorkflow(prevWorkflow => ({ ...prevWorkflow, value: text }))
+        }
       />
       <View style={styles.buttonsWrapper}>
         <Button
           title="Action"
           customStyle={styles.button}
-          onPress={() => handleButtonPress('Action')}
+          onPress={() => handleButtonPress('isModalVisibleAction')}
         />
         <Button
           title="Conditional"
           customStyle={styles.ConditionButton}
-          onPress={() => handleButtonPress('Conditional')}
+          onPress={() => handleButtonPress('isModalVisibleCondition')}
         />
         <MultiSelector
-          isVisible={isModalVisibleAction}
+          isVisible={modalState.isModalVisibleAction}
           onSave={handleSave}
-          onClose={() => setModalVisibleAction(false)}
+          onClose={() => handleButtonPress('isModalVisibleAction')}
           txt="Enter Action"
           selectAnOption={selectAnOption}
         />
         <MultiSelector
-          isVisible={isModalVisibleCondition}
+          isVisible={modalState.isModalVisibleCondition}
           onSave={handleSave}
-          onClose={() => setModalVisibleCondition(false)}
+          onClose={() => handleButtonPress('isModalVisibleCondition')}
           txt="Enter Condition"
           selectAnOption={selectAnOption}
         />
       </View>
 
-      <Button
+      {/* <Button
         title="End"
         customStyle={styles.EndButton}
-        onPress={() => handleButtonPress('End')}
-      />
-      <MultiSelector
-        isVisible={isModalVisibleEnd}
+        onPress={() => handleButtonPress('isModalVisibleEnd')}
+      /> */}
+      {/* <MultiSelector
+        isVisible={modalState.isModalVisibleEnd}
         onSave={handleSave}
-        onClose={() => setModalVisibleEnd(false)}
-        txt="End"
+        onClose={() => handleButtonPress('isModalVisibleEnd')}
+        txt="Enter End"
         selectAnOption={selectAnOption}
-      />
+      /> */}
       <Button
         title="Done"
         customStyle={styles.doneButton}

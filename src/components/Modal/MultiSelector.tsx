@@ -1,4 +1,4 @@
-import React, {useState, FC} from 'react';
+import React, { useState, FC } from 'react';
 import {
   View,
   Text,
@@ -10,7 +10,7 @@ import {
 import Modal from 'react-native-modal';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {MultiSelectorProps} from '..';
+import { MultiSelectorProps } from '..';
 
 const MultiSelector: FC<MultiSelectorProps> = ({
   isVisible,
@@ -18,13 +18,21 @@ const MultiSelector: FC<MultiSelectorProps> = ({
   onClose,
   txt,
   selectAnOption,
+
 }) => {
-  const [input1, setInput1] = useState('');
+  const [addActionNode, setAddActionNode] = useState<string>('');
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [errorText,setErrorText] = useState('')
 
   const handleSave = () => {
-    onSave(input1, selectedValues);
-    onClose();
+    onSave(addActionNode, selectedValues);
+    if (addActionNode !== '' && selectedValues.length > 0) {
+      onSave(addActionNode, selectedValues);
+      onClose();
+      setErrorText("");
+    } else {
+      setErrorText("Please fill all the inputs");
+    }
   };
 
   return (
@@ -32,14 +40,15 @@ const MultiSelector: FC<MultiSelectorProps> = ({
       isVisible={isVisible}
       animationIn="slideInDown"
       animationOut="slideOutUp"
-      onBackdropPress={onClose}>
+      onBackdropPress={onClose}
+    >
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <TextInput
             style={styles.input}
             placeholder={txt}
-            value={input1}
-            onChangeText={setInput1}
+            value={addActionNode}
+            onChangeText={setAddActionNode}
           />
 
           <SectionedMultiSelect
@@ -58,7 +67,7 @@ const MultiSelector: FC<MultiSelectorProps> = ({
               primary: '#5cb85c',
             }}
           />
-
+<Text style={{color:'red',marginBottom:20}}>{errorText}</Text>
           <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>

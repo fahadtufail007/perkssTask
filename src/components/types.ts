@@ -4,7 +4,7 @@ export interface MultiSelectorProps {
   onSave: (input1: string, selectedValues: any[]) => void;
   onClose: () => void;
   txt: string;
-  selectAnOption: {id: string; name: string}[];
+  selectAnOption: { id: string; name: string }[];
 }
 export interface InputProps {
   placeholder: string;

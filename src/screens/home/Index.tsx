@@ -1,90 +1,59 @@
-import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import Toast from 'react-native-toast-message';
+import React, { useState } from 'react';
 import HomeScreen from './HomeScreen';
+import CustomHooks from '../../CustomHooks/CustomHooks';
+import { showToast } from '../../components';
 
 export const Index = () => {
-  const navigation = useNavigation();
-  const [value, setValue] = useState('Start');
-  const [name, setName] = useState('');
-  const [isModalVisibleAction, setModalVisibleAction] = useState(false);
-  const [isModalVisibleCondition, setModalVisibleCondition] = useState(false);
-  const [isModalVisibleEnd, setModalVisibleEnd] = useState(false);
+  const { navigateToScreen } = CustomHooks();
+
+  const [workflow, setWorkflow] = useState({
+    value: 'Start',
+    name: '',
+  });
+  const [modalState, setModalState] = useState({
+    isModalVisibleAction: false,
+    isModalVisibleCondition: false,
+    isModalVisibleEnd: false,
+  });
   const [selectAnOption, setSelectAnOption] = useState([
-    {id: '1', name: 'Start'},
+    { id: '1', name: 'Start' },
   ]);
-  const [viewValue, setViewValue] = useState([{key: '1', name: 'Start'}]);
 
   const handleSave = (input1: string, selectedOption: any[]) => {
     if (input1 && selectedOption.length > 0) {
       const dataForConditionNode = {
         id: String(selectAnOption.length + 1),
         name: input1,
-        children: selectedOption,
-      };
-      const dataForConditionNodeView = {
-        key: String(selectAnOption.length + 1),
-        name: input1,
         parent: selectedOption[0],
       };
       setSelectAnOption([...selectAnOption, dataForConditionNode]);
-      setViewValue([...viewValue, dataForConditionNodeView]);
-
-      console.log(dataForConditionNode);
-    } else {
-      Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'Please fill all the fields',
-        visibilityTime: 1000,
-        autoHide: true,
-      });
     }
   };
 
-  const handleButtonPress = (buttonName: string) => {
-    const modalStateSetterMap = {
-      Action: setModalVisibleAction,
-      Conditional: setModalVisibleCondition,
-      End: setModalVisibleEnd,
-    };
-    const modalStateSetter =
-      modalStateSetterMap[buttonName as keyof typeof modalStateSetterMap];
-    if (modalStateSetter) {
-      modalStateSetter(true);
-    }
+  const handleButtonPress = (buttonName: keyof typeof modalState) => {
+    setModalState(prevState => ({
+      ...prevState,
+      [buttonName]: !prevState[buttonName],
+    }));
   };
 
   const handleNavigate = () => {
-    if (selectAnOption.length && viewValue.length > 1 && name !== '') {
+    if (selectAnOption.length > 1 && workflow.name !== '') {
       const dataToShowOnNextScreen = {
-        userName: name,
+        userName: workflow.name,
         selectAnOption,
-        viewValue,
       };
-      navigation.navigate('workFlow', dataToShowOnNextScreen);
+      navigateToScreen('workFlow', dataToShowOnNextScreen);
     } else {
-      Toast.show({
-        type: 'error',
-        position: 'top',
-        text1: 'Please fill all the fields',
-        visibilityTime: 1000,
-        autoHide: true,
-      });
+      showToast('error', 'please fill all the fields');
     }
   };
   return (
     <HomeScreen
-      name={name}
-      setName={setName}
-      value={value}
-      setValue={setValue}
-      isModalVisibleAction={isModalVisibleAction}
-      setModalVisibleAction={setModalVisibleAction}
-      isModalVisibleCondition={isModalVisibleCondition}
-      setModalVisibleCondition={setModalVisibleCondition}
-      isModalVisibleEnd={isModalVisibleEnd}
-      setModalVisibleEnd={setModalVisibleEnd}
+      workflow={workflow}
+      setWorkflow={setWorkflow}
+      modalState={modalState}
+      setModalState={setModalState}
       selectAnOption={selectAnOption}
       handleSave={handleSave}
       handleButtonPress={handleButtonPress}
