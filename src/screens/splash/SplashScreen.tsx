@@ -3,10 +3,10 @@ import { StyleSheet, View, Image, StatusBar } from 'react-native';
 
 import { colors } from '../../utils/theme';
 import Logo from '../../assets/perkss.png';
-import CustomHooks from '../../CustomHooks/CustomHooks';
+import useNavigate from '../../customHooks/useNavigate';
 
 const SplashScreen = () => {
-  const { navigateToScreen } = CustomHooks();
+  const { navigateToScreen } = useNavigate();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {

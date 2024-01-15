@@ -2,7 +2,7 @@ import { useNavigation, NavigationProp } from '@react-navigation/native';
 
 type NavigationParams = Record<string, any>;
 
-const CustomHooks = () => {
+const useNavigate = () => {
   const navigation =
     useNavigation<NavigationProp<Record<string, NavigationParams>>>();
 
@@ -15,4 +15,4 @@ const CustomHooks = () => {
   };
 };
 
-export default CustomHooks;
+export default useNavigate;

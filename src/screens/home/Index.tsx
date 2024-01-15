@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+
 import HomeScreen from './HomeScreen';
-import CustomHooks from '../../CustomHooks/CustomHooks';
+import useNavigate from '../../customHooks/useNavigate';
 import { showToast } from '../../components';
 
 export const Index = () => {
-  const { navigateToScreen } = CustomHooks();
+  const { navigateToScreen } = useNavigate();
 
   const [workflow, setWorkflow] = useState({
     value: 'Start',
@@ -19,11 +20,11 @@ export const Index = () => {
     { id: '1', name: 'Start' },
   ]);
 
-  const handleSave = (input1: string, selectedOption: any[]) => {
-    if (input1 && selectedOption.length > 0) {
+  const handleSave = (addActionNode: string, selectedOption: string []) => {
+    if (addActionNode && selectedOption.length > 0) {
       const dataForConditionNode = {
         id: String(selectAnOption.length + 1),
-        name: input1,
+        name: addActionNode,
         parent: selectedOption[0],
       };
       setSelectAnOption([...selectAnOption, dataForConditionNode]);

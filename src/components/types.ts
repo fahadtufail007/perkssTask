@@ -1,7 +1,7 @@
 // types.ts
 export interface MultiSelectorProps {
   isVisible: boolean;
-  onSave: (input1: string, selectedValues: any[]) => void;
+  onSave: (addActionNode: string, selectedValues: string []) => void;
   onClose: () => void;
   txt: string;
   selectAnOption: { id: string; name: string }[];

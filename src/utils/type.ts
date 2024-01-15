@@ -19,7 +19,7 @@ export interface HomeScreenProps {
     }>
   >;
   selectAnOption: { id: string; name: string }[];
-  handleSave: (input1: string, selectedOption: any[]) => void;
+  handleSave: (addActionNode: string, selectedOption: string []) => void;
   handleButtonPress: (
     buttonName:
       | 'isModalVisibleEnd'

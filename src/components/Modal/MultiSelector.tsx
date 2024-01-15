@@ -10,6 +10,7 @@ import {
 import Modal from 'react-native-modal';
 import SectionedMultiSelect from 'react-native-sectioned-multi-select';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
 import { MultiSelectorProps } from '..';
 
 const MultiSelector: FC<MultiSelectorProps> = ({
@@ -29,7 +30,7 @@ const MultiSelector: FC<MultiSelectorProps> = ({
     if (addActionNode !== '' && selectedValues.length > 0) {
       onSave(addActionNode, selectedValues);
       onClose();
-      setErrorText('');
+      setErrorText("");
       setAddActionNode('')
       setSelectedValues([])
     } else {
