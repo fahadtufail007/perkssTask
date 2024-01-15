@@ -59,18 +59,7 @@ const HomeScreen: FC<HomeScreenProps> = ({
         />
       </View>
 
-      {/* <Button
-        title="End"
-        customStyle={styles.EndButton}
-        onPress={() => handleButtonPress('isModalVisibleEnd')}
-      /> */}
-      {/* <MultiSelector
-        isVisible={modalState.isModalVisibleEnd}
-        onSave={handleSave}
-        onClose={() => handleButtonPress('isModalVisibleEnd')}
-        txt="Enter End"
-        selectAnOption={selectAnOption}
-      /> */}
+    
       <Button
         title="Done"
         customStyle={styles.doneButton}
