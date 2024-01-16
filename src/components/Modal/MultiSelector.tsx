@@ -19,25 +19,56 @@ const MultiSelector: FC<MultiSelectorProps> = ({
   onClose,
   txt,
   selectAnOption,
-
 }) => {
   const [addActionNode, setAddActionNode] = useState<string>('');
   const [selectedValues, setSelectedValues] = useState<string[]>([]);
-  const [errorText,setErrorText] = useState('')
+  const [errorText, setErrorText] = useState<string>('');
 
   const handleSave = () => {
-    onSave(addActionNode, selectedValues);
     if (addActionNode !== '' && selectedValues.length > 0) {
       onSave(addActionNode, selectedValues);
       onClose();
-      setErrorText("");
-      setAddActionNode('')
-      setSelectedValues([])
+      setErrorText('');
+      setAddActionNode('');
+      setSelectedValues([]);
     } else {
-      setErrorText("Please fill all the inputs");
+      setErrorText('Please fill all the inputs');
     }
   };
-
+  const multiSelectStyles = {
+    container: {
+      borderWidth: 1,
+      borderColor: 'gray',
+      borderRadius: 5,
+      marginBottom: 10,
+    },
+    selectToggle: {
+      borderColor: 'gray',
+      borderWidth: 1,
+      padding: 10,
+    },
+    item: {
+      padding: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: 'gray',
+    },
+    subItem: {
+      padding: 10,
+      borderBottomWidth: 1,
+      borderBottomColor: 'gray',
+    },
+    selectToggleText: {
+      color: 'black',
+    },
+    selectedText: {
+      color: '#5cb85c',
+    },
+    searchTextInput: {
+      color: 'black',
+      borderBottomColor: 'gray',
+      borderBottomWidth: 1,
+    },
+  };
   return (
     <Modal
       isVisible={isVisible}
@@ -58,7 +89,7 @@ const MultiSelector: FC<MultiSelectorProps> = ({
             items={selectAnOption}
             uniqueKey="id"
             IconRenderer={Icon}
-            onSelectedItemsChange={selectedItems =>
+            onSelectedItemsChange={(selectedItems) =>
               setSelectedValues(selectedItems as string[])
             }
             selectedItems={selectedValues}
@@ -69,12 +100,16 @@ const MultiSelector: FC<MultiSelectorProps> = ({
             colors={{
               primary: '#5cb85c',
             }}
+            styles={multiSelectStyles}
           />
-<Text style={{color:'red',marginBottom:20}}>{errorText}</Text>
-          <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
+
+          <Text style={styles.errorText}>{errorText}</Text>
+
+          <TouchableOpacity style={styles.button} onPress={handleSave}>
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+
+          <TouchableOpacity style={styles.button} onPress={onClose}>
             <Text style={styles.buttonText}>Close Modal</Text>
           </TouchableOpacity>
         </View>
@@ -96,12 +131,6 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0, 0, 0, 0.1)',
     width: '80%',
   },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    textAlign: 'center',
-  },
   input: {
     height: 40,
     borderColor: 'gray',
@@ -110,16 +139,15 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 10,
   },
-  saveButton: {
+  errorText: {
+    color: 'red',
+    marginBottom: 20,
+  },
+  button: {
     backgroundColor: '#5cb85c',
     padding: 10,
     borderRadius: 5,
     marginBottom: 10,
-  },
-  closeButton: {
-    backgroundColor: '#d9534f',
-    padding: 10,
-    borderRadius: 5,
   },
   buttonText: {
     color: 'white',
