@@ -21,7 +21,6 @@ export const Index = () => {
   ]);
 
   const handleSave = (addActionNode: string, selectedOption: string []) => {
-    console.log(selectAnOption)
     if (addActionNode && selectedOption.length > 0) {
       const dataForConditionNode = {
         id: String(selectAnOption.length + 1),
